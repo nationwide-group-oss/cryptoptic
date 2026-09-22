@@ -1,0 +1,87 @@
+name: cryptoptic
+description: Run cryptoptic scans, query-suite tests, Python tests, and SARIF/CSV utilities in a pinned CodeQL container.
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  command:
+    description: "Operation to run: scan, test, python-tests, convert, or aggregate."
+    required: false
+    default: scan
+  github-token:
+    description: Token with access to the repositories to scan. Required by scan.
+    required: false
+    default: ''
+  target-language:
+    description: "Language for scan: python, javascript, or csharp."
+    required: false
+    default: python
+  organization:
+    description: GitHub organization to scan. Set this or repository for scan.
+    required: false
+    default: ''
+  repository:
+    description: Single repository to scan, as owner/name.
+    required: false
+    default: ''
+  repository-list:
+    description: JSON array of repository names for a pre-partitioned organization scan.
+    required: false
+    default: ''
+  start-at:
+    description: Number of organization repositories to skip before scanning.
+    required: false
+    default: '0'
+  max-repositories:
+    description: Maximum organization repositories to scan; 0 means no limit.
+    required: false
+    default: '0'
+  budget-seconds:
+    description: Total scan time budget in seconds.
+    required: false
+    default: '19800'
+  codeql-ram-mb:
+    description: Maximum RAM for each CodeQL analysis, in MB. Applies to scan; the test command uses a fixed allocation.
+    required: false
+    default: '6144'
+  repository-timeout-seconds:
+    description: Per-repository scan timeout in seconds.
+    required: false
+    default: '1800'
+  output-directory:
+    description: Workspace-relative directory for scan results.
+    required: false
+    default: org-sarif
+  test-output-directory:
+    description: Workspace-relative directory for the query-suite test SARIF.
+    required: false
+    default: output
+  sarif-file:
+    description: Workspace-relative SARIF input for convert.
+    required: false
+    default: ''
+  output-file:
+    description: Workspace-relative output CSV for convert or aggregate.
+    required: false
+    default: ''
+  csv-inputs:
+    description: Newline-delimited workspace-relative CSV files or directories for aggregate.
+    required: false
+    default: ''
+  recursive:
+    description: Search aggregate input directories recursively.
+    required: false
+    default: 'false'
+  pytest-target:
+    description: Test path passed to pytest for python-tests.
+    required: false
+    default: tests
+
+outputs:
+  results-directory:
+    description: Absolute path to the scan or query-suite test results copied into the workspace.
+
+runs:
+  using: docker
+  image: Dockerfile
